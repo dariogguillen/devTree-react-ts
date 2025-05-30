@@ -1,6 +1,25 @@
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import ErrorMessage from "../components/ErrorMessage";
 
 const RegisterView = () => {
+  const initialValues = {
+    name: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+    passwordConfirmation: "",
+  };
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: initialValues });
+
+  const password = watch("password");
+
   return (
     <>
       <h1 className="text-4xl text-white font-bold">Create An Account</h1>
@@ -17,18 +36,24 @@ const RegisterView = () => {
             type="text"
             placeholder="Your name"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("name", { required: "Name is required" })}
           />
+          {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-1">
-          <label htmlFor="lastname" className="text-2xl text-slate-500">
-            Lastname
+          <label htmlFor="lastName" className="text-2xl text-slate-500">
+            Last name
           </label>
           <input
-            id="lastname"
+            id="lastName"
             type="text"
-            placeholder="Your lastname"
+            placeholder="Your last name"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("lastName", { required: "Last name is required" })}
           />
+          {errors.lastName && (
+            <ErrorMessage>{errors.lastName.message}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-1">
           <label htmlFor="email" className="text-2xl text-slate-500">
@@ -39,7 +64,15 @@ const RegisterView = () => {
             type="email"
             placeholder="Email to register"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Email is not valid",
+              },
+            })}
           />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-1">
           <label htmlFor="username" className="text-2xl text-slate-500">
@@ -50,7 +83,11 @@ const RegisterView = () => {
             type="text"
             placeholder="Username without spaces"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("username", { required: "Username is required" })}
           />
+          {errors.username && (
+            <ErrorMessage>{errors.username.message}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-1">
           <label htmlFor="password" className="text-2xl text-slate-500">
@@ -61,21 +98,39 @@ const RegisterView = () => {
             type="password"
             placeholder="Password to register"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 12,
+                message: "Password must have at least 12 characters",
+              },
+            })}
           />
+          {errors.password && (
+            <ErrorMessage>{errors.password.message}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-1">
           <label
-            htmlFor="password_confirmation"
+            htmlFor="passwordConfirmation"
             className="text-2xl text-slate-500"
           >
-            Repeat Password
+            Password confirmation
           </label>
           <input
-            id="password"
+            id="passwordConfirmation"
             type="password"
-            placeholder="Repeat password to register"
+            placeholder="Repeat password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
+            {...register("passwordConfirmation", {
+              required: "Password confirmation is required",
+              validate: (value) =>
+                value === password || "Passwords do not match",
+            })}
           />
+          {errors.passwordConfirmation && (
+            <ErrorMessage>{errors.passwordConfirmation.message}</ErrorMessage>
+          )}
         </div>
         <input
           type="submit"
