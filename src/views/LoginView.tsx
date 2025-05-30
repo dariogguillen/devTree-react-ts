@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import ErrorMessage from "../components/ErrorMessage";
+import type { LoginForm } from "../types";
+import api from "../config/axios";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 const LoginView = () => {
-  const initialValues = {
+  const initialValues: LoginForm = {
     email: "",
     password: "",
   };
@@ -10,14 +15,27 @@ const LoginView = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: initialValues });
+
+  const handleLogin = async (formData: LoginForm) => {
+    try {
+      const { data } = await api.post("/auth/login", formData);
+      toast.success(data.response);
+      reset();
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        toast.error(error.response.data.error);
+      }
+    }
+  };
 
   return (
     <>
       <h1 className="text-4xl text-white font-bold">Login</h1>
       <form
-        onSubmit={() => {}}
+        onSubmit={handleSubmit(handleLogin)}
         className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
         noValidate
       >
@@ -38,6 +56,7 @@ const LoginView = () => {
               },
             })}
           />
+          {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="password" className="text-2xl text-slate-500">
@@ -52,7 +71,11 @@ const LoginView = () => {
               required: "El Password es obligatorio",
             })}
           />
+          {errors.password && (
+            <ErrorMessage>{errors.password.message}</ErrorMessage>
+          )}
         </div>
+
         <input
           type="submit"
           className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"

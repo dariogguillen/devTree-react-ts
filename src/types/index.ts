@@ -12,3 +12,7 @@ export type RegisterCredential = Pick<
   password: string;
   passwordConfirmation: string;
 };
+
+export type LoginForm = Pick<User, "email"> & {
+  password: string;
+};
