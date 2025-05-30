@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios, { isAxiosError } from "axios";
+import type { RegisterCredential } from "../types";
 import ErrorMessage from "../components/ErrorMessage";
 
 const RegisterView = () => {
-  const initialValues = {
+  const initialValues: RegisterCredential = {
     name: "",
     lastName: "",
     email: "",
@@ -15,16 +17,32 @@ const RegisterView = () => {
     register,
     watch,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm({ defaultValues: initialValues });
+  } = useForm<RegisterCredential>({ defaultValues: initialValues });
 
   const password = watch("password");
+
+  const handleRegister = async (formData: RegisterCredential) => {
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/register`,
+        formData,
+      );
+      console.log(data);
+      reset();
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        console.log(error.response.data.error);
+      }
+    }
+  };
 
   return (
     <>
       <h1 className="text-4xl text-white font-bold">Create An Account</h1>
       <form
-        onSubmit={() => {}}
+        onSubmit={handleSubmit(handleRegister)}
         className="bg-white px-5 py-10 rounded-lg space-y-10 mt-10"
       >
         <div className="grid grid-cols-1 space-y-1">
