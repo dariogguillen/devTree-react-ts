@@ -22,6 +22,7 @@ const LoginView = () => {
   const handleLogin = async (formData: LoginForm) => {
     try {
       const { data } = await api.post("/auth/login", formData);
+      localStorage.setItem("AUTH_TOKEN", data.token);
       toast.success(data.response);
       reset();
     } catch (error) {
