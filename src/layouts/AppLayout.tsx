@@ -1,5 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
+import NavigationTabs from "../components/NavigationTabs";
 
 export default function AppLayout() {
   return (
@@ -14,13 +15,14 @@ export default function AppLayout() {
               className=" bg-lime-500 p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
               onClick={() => {}}
             >
-              Cerrar Sesión
+              Log out
             </button>
           </div>
         </div>
       </header>
       <div className="bg-gray-100  min-h-screen py-10">
         <main className="mx-auto max-w-5xl p-10 md:p-0">
+          <NavigationTabs />
           <div className="flex justify-end">
             <Link
               className="font-bold text-right text-slate-800 text-2xl"
@@ -28,7 +30,7 @@ export default function AppLayout() {
               target="_blank"
               rel="noreferrer noopener"
             >
-              Visitar Mi Perfil
+              Visit Profile
             </Link>
           </div>
 
