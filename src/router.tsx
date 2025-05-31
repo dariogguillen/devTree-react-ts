@@ -3,6 +3,7 @@ import LoginView from "./views/LoginView";
 import RegisterView from "./views/RegisterView";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
+import ProfileView from "./views/ProfileView";
 
 const Router = () => {
   return (
@@ -13,7 +14,7 @@ const Router = () => {
           <Route path="/auth/register" element={<RegisterView />} />
         </Route>
         <Route path="/admin" element={<AppLayout />}>
-          <Route index={true} />
+          <Route path="profile" element={<ProfileView />} />
         </Route>
       </Routes>
     </BrowserRouter>
