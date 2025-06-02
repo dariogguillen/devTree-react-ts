@@ -1,8 +1,17 @@
 import { Link, Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 import NavigationTabs from "../components/NavigationTabs";
+import { useQuery } from "@tanstack/react-query";
+import { getUser } from "../api/DevTreeAPI";
 
-export default function AppLayout() {
+const AppLayout = () => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: getUser,
+    queryKey: ["user"],
+    retry: 3,
+    refetchOnWindowFocus: false,
+  });
+
   return (
     <>
       <header className="bg-slate-800 py-5">
@@ -45,4 +54,6 @@ export default function AppLayout() {
       <Toaster position="top-right" />
     </>
   );
-}
+};
+
+export default AppLayout;
