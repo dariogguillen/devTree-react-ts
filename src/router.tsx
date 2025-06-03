@@ -4,6 +4,7 @@ import RegisterView from "./views/RegisterView";
 import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
 import ProfileView from "./views/ProfileView";
+import LinkTreeView from "./views/LinkTreeView";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
           <Route path="/auth/register" element={<RegisterView />} />
         </Route>
         <Route path="/admin" element={<AppLayout />}>
+          <Route index={true} element={<LinkTreeView />} />
           <Route path="profile" element={<ProfileView />} />
         </Route>
       </Routes>
