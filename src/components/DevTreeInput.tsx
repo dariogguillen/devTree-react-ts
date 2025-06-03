@@ -1,10 +1,18 @@
 import { Switch } from "@headlessui/react";
 import type { DevTreeLink } from "../types";
 import { classNames } from "../utils";
+
 type DevTreeInputProps = {
   item: DevTreeLink;
+  handleUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleEnableLink: (socialNetwork: string) => void;
 };
-const DevTreeInput = ({ item }: DevTreeInputProps) => {
+
+const DevTreeInput = ({
+  item,
+  handleUrlChange,
+  handleEnableLink: handleEnalbeLink,
+}: DevTreeInputProps) => {
   return (
     <div className="bg-white shadow-sm p-5 items-center flex gap-3">
       <div
@@ -15,10 +23,11 @@ const DevTreeInput = ({ item }: DevTreeInputProps) => {
         type="text"
         className="flex-1 border border-gray-100 rounded-lg"
         name={item.name}
+        onChange={handleUrlChange}
       />
       <Switch
         checked={item.enabled}
-        onChange={() => {}}
+        onChange={() => handleEnalbeLink(item.name)}
         className={classNames(
           item.enabled ? "bg-blue-500" : "bg-gray-200",
           "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
