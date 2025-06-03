@@ -47,7 +47,10 @@ const ProfileView = () => {
   });
 
   const handleUserProfileForm = (formData: ProfileFrom) => {
-    updateProfileMutation.mutate(formData);
+    const user: User = queryClient.getQueryData(["user"])!;
+    user.description = formData.description;
+    user.username = formData.username;
+    updateProfileMutation.mutate(user);
   };
 
   const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
