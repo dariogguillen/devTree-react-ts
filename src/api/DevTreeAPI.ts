@@ -23,3 +23,19 @@ export const updateProfile = async (formData: ProfileFrom) => {
     }
   }
 };
+
+export const uploadImage = async (file: File) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  try {
+    const { data } = await api.post<{ response: string; image: string }>(
+      "/user/image",
+      formData,
+    );
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+};

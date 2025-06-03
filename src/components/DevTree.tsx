@@ -39,7 +39,19 @@ const DevTree = ({ data }: { data: User }) => {
             <div className="flex-1 ">
               <Outlet />
             </div>
-            <div className="w-full md:w-96 bg-slate-800 px-5 py-10 space-y-6"></div>
+            <div className="w-full md:w-96 bg-slate-800 px-5 py-10 space-y-6">
+              <p className="text-4xl text-center text-white">{data.username}</p>
+              {data.image && (
+                <img
+                  src={data.image}
+                  alt="Profile image"
+                  className="mx-auto max-w-[250px]"
+                />
+              )}
+              <p className="text-white text-center text-lg font-black">
+                {data.description}
+              </p>
+            </div>
           </div>
         </main>
       </div>
