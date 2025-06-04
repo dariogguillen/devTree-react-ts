@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginView from "./views/LoginView";
-import RegisterView from "./views/RegisterView";
-import AuthLayout from "./layouts/AuthLayout";
 import AppLayout from "./layouts/AppLayout";
-import ProfileView from "./views/ProfileView";
-import LinkTreeView from "./views/LinkTreeView";
-import UserView from "./views/UserView";
-import NotFoundView from "./views/NotFoundView";
+import AuthLayout from "./layouts/AuthLayout";
 import HomeView from "./views/HomeView";
+import LinkTreeView from "./views/LinkTreeView";
+import LoginView from "./views/LoginView";
+import NotFoundView from "./views/NotFoundView";
+import ProfileView from "./views/ProfileView";
+import RegisterView from "./views/RegisterView";
+import UserView from "./views/UserView";
 
 const Router = () => {
   return (
