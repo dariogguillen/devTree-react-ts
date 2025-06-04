@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { social } from "../data/social";
 import DevTreeInput from "../components/DevTreeInput";
 import { isValidUr } from "../utils";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "../api/DevTreeAPI";
-import type { User } from "../types";
+import type { DevTreeLink, SocialNetwork, User } from "../types";
 
 const LinkTreeView = () => {
   const [devTreeLinks, setDevTreeLinks] = useState(social);
@@ -23,11 +23,35 @@ const LinkTreeView = () => {
     },
   });
 
+  useEffect(() => {
+    setDevTreeLinks((prev) => {
+      const updatedDate = prev.map((item) => {
+        const userLink = JSON.parse(user.links).find(
+          (link: SocialNetwork) => link.name === item.name,
+        );
+        if (userLink) {
+          return { ...item, url: userLink.url, enabled: userLink.enabled };
+        } else {
+          return item;
+        }
+      });
+      return updatedDate;
+    });
+  }, [user.links]);
+
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedLinks = devTreeLinks.map((link) =>
       link.name === e.target.name ? { ...link, url: e.target.value } : link,
     );
+
     setDevTreeLinks(updatedLinks);
+
+    queryClient.setQueryData(["user"], (oldUser: User) => {
+      return {
+        ...oldUser,
+        links: JSON.stringify(updatedLinks),
+      };
+    });
   };
 
   const handleEnableLink = (socialNetwork: string) => {

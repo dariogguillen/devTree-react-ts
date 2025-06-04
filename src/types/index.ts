@@ -6,6 +6,7 @@ export type User = {
   email: string;
   description: string;
   image: string;
+  links: string;
 };
 
 export type RegisterCredential = Pick<
