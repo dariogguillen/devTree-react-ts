@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { social } from "../data/social";
-import DevTreeInput from "../components/DevTreeInput";
-import { isValidUr } from "../utils";
-import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { updateProfile } from "../api/DevTreeAPI";
-import type { DevTreeLink, SocialNetwork, User } from "../types";
+import DevTreeInput from "../components/DevTreeInput";
+import { social } from "../data/social";
+import type { SocialNetwork, User } from "../types";
+import { isValidUr } from "../utils";
 
 const LinkTreeView = () => {
   const [devTreeLinks, setDevTreeLinks] = useState(social);
@@ -45,14 +45,9 @@ const LinkTreeView = () => {
     );
 
     setDevTreeLinks(updatedLinks);
-
-    queryClient.setQueryData(["user"], (oldUser: User) => {
-      return {
-        ...oldUser,
-        links: JSON.stringify(updatedLinks),
-      };
-    });
   };
+
+  const links: SocialNetwork[] = JSON.parse(user.links);
 
   const handleEnableLink = (socialNetwork: string) => {
     const updatedLinks = devTreeLinks.map((link) => {
@@ -70,10 +65,60 @@ const LinkTreeView = () => {
 
     setDevTreeLinks(updatedLinks);
 
+    let updatedItems: SocialNetwork[] = [];
+
+    const selectedSocialNetwork = updatedLinks.find(
+      (link) => link.name === socialNetwork,
+    );
+
+    if (selectedSocialNetwork?.enabled) {
+      const id = links.filter((link) => link.id).length + 1;
+      if (links.some((link) => link.name === socialNetwork)) {
+        updatedItems = links.map((link) => {
+          if (link.name === socialNetwork) {
+            return {
+              ...link,
+              enabled: true,
+              id,
+            };
+          } else {
+            return link;
+          }
+        });
+      } else {
+        const newItem = {
+          ...selectedSocialNetwork,
+          id,
+        };
+        updatedItems = [...links, newItem];
+      }
+    } else {
+      const indexToUpdate = links.findIndex(
+        (link) => link.name === socialNetwork,
+      );
+
+      updatedItems = links.map((link) => {
+        if (link.name === socialNetwork) {
+          return {
+            ...link,
+            id: 0,
+            enabled: false,
+          };
+        } else if (link.id > indexToUpdate) {
+          return {
+            ...link,
+            id: link.id - 1,
+          };
+        } else {
+          return link;
+        }
+      });
+    }
+
     queryClient.setQueryData(["user"], (oldUser: User) => {
       return {
         ...oldUser,
-        links: JSON.stringify(updatedLinks),
+        links: JSON.stringify(updatedItems),
       };
     });
   };
