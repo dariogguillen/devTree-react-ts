@@ -52,3 +52,16 @@ export const getUserByUsername = async (username: string) => {
     }
   }
 };
+
+export const searchUsername = async (username: string) => {
+  try {
+    const { data } = await api.post<{ response: string }>(`/search`, {
+      username,
+    });
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+};

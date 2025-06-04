@@ -1,4 +1,5 @@
 import Header from "../components/Header";
+import SearchForm from "../components/SearchForm";
 
 const HomeView = () => {
   return (
@@ -14,6 +15,7 @@ const HomeView = () => {
             <p className="text-slate-800 text-xl">
               Join with other developers and share your Social Networks
             </p>
+            <SearchForm />
           </div>
         </div>
       </main>
