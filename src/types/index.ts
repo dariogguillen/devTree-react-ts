@@ -9,6 +9,11 @@ export type User = {
   links: string;
 };
 
+export type UserResponse = Pick<
+  User,
+  "name" | "lastName" | "username" | "description" | "image" | "links"
+>;
+
 export type RegisterCredential = Pick<
   User,
   "name" | "lastName" | "username" | "email"
