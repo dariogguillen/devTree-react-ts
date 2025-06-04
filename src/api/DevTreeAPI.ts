@@ -39,3 +39,16 @@ export const uploadImage = async (file: File) => {
     }
   }
 };
+
+export const getUserByUsername = async (username: string) => {
+  try {
+    const { data } = await api<{ response: string; user: User }>(
+      `/${username}`,
+    );
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+};
