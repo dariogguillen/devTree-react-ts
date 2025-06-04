@@ -7,6 +7,7 @@ import ProfileView from "./views/ProfileView";
 import LinkTreeView from "./views/LinkTreeView";
 import UserView from "./views/UserView";
 import NotFoundView from "./views/NotFoundView";
+import HomeView from "./views/HomeView";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/:username" element={<AuthLayout />}>
           <Route index={true} element={<UserView />} />
         </Route>
+        <Route path="/" element={<HomeView />} />
         <Route path="/404" element={<AuthLayout />}>
           <Route index={true} element={<NotFoundView />} />
         </Route>
