@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
@@ -25,12 +25,14 @@ const RegisterView = () => {
   } = useForm<RegisterCredential>({ defaultValues: initialValues });
 
   const password = watch("password");
+  const navigate = useNavigate();
 
   const handleRegister = async (formData: RegisterCredential) => {
     try {
       const { data } = await api.post("/auth/register", formData);
       toast.success(data.response);
       reset();
+      navigate("/auth/login");
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         toast.error(error.response.data.error);

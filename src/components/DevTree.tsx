@@ -32,7 +32,7 @@ const DevTree = ({ data }: { data: User }) => {
       const prevIndex = enabledLinks.findIndex(
         (link) => link.id === e.active.id,
       );
-      const newIndex = enabledLinks.findIndex((link) => link.id === e.over.id);
+      const newIndex = enabledLinks.findIndex((link) => link.id === e.over?.id);
 
       const order = arrayMove(enabledLinks, prevIndex, newIndex);
       setEnabledLinks(order);
