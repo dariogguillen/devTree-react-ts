@@ -40,11 +40,19 @@ const LinkTreeView = () => {
   }, [user.links]);
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
     const updatedLinks = devTreeLinks.map((link) =>
-      link.name === e.target.name ? { ...link, url: e.target.value } : link,
+      link.name === e.target.name
+        ? { ...link, url: value, enabled: value ? link.enabled : false }
+        : link,
     );
 
     setDevTreeLinks(updatedLinks);
+
+    queryClient.setQueryData(["user"], (oldUser: User) => ({
+      ...oldUser,
+      links: JSON.stringify(updatedLinks),
+    }));
   };
 
   const links: SocialNetwork[] = JSON.parse(user.links);
