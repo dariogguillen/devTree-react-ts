@@ -3,10 +3,6 @@ export const classNames = (...classes: string[]) => {
 };
 
 export const isValidUr = (url: string) => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
+  const regex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]*)*$/;
+  return regex.test(url);
 };
