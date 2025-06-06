@@ -4,11 +4,12 @@ import { toast } from "sonner";
 import { updateProfile } from "../api/DevTreeAPI";
 import DevTreeInput from "../components/DevTreeInput";
 import { social } from "../data/social";
-import type { SocialNetwork, User } from "../types";
+import type { DevTreeLink, SocialNetwork, User } from "../types";
 import { isValidUr } from "../utils";
 
 const LinkTreeView = () => {
-  const [devTreeLinks, setDevTreeLinks] = useState(social);
+  const [devTreeLinks, setDevTreeLinks] =
+    useState<(DevTreeLink | SocialNetwork)[]>(social);
 
   const queryClient = useQueryClient();
   const user: User = queryClient.getQueryData(["user"])!;
@@ -25,25 +26,36 @@ const LinkTreeView = () => {
 
   useEffect(() => {
     setDevTreeLinks((prev) => {
-      const updatedDate = prev.map((item) => {
-        const userLink = JSON.parse(user.links).find(
+      const updatedData = prev.map((item) => {
+        const userLink: SocialNetwork = JSON.parse(user.links).find(
           (link: SocialNetwork) => link.name === item.name,
         );
         if (userLink) {
-          return { ...item, url: userLink.url, enabled: userLink.enabled };
+          const id = userLink.id ? { id: userLink.id } : {};
+          return {
+            ...item,
+            ...id,
+            url: userLink.url,
+            enabled: userLink.enabled,
+          };
         } else {
           return item;
         }
       });
-      return updatedDate;
+      return updatedData;
     });
   }, [user.links]);
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const validUrl = isValidUr(value);
     const updatedLinks = devTreeLinks.map((link) =>
       link.name === e.target.name
-        ? { ...link, url: value, enabled: value ? link.enabled : false }
+        ? {
+            ...link,
+            url: value,
+            enabled: value && validUrl ? link.enabled : false,
+          }
         : link,
     );
 
@@ -70,8 +82,6 @@ const LinkTreeView = () => {
         return link;
       }
     });
-
-    setDevTreeLinks(updatedLinks);
 
     let updatedItems: SocialNetwork[] = [];
 
@@ -127,6 +137,7 @@ const LinkTreeView = () => {
       });
     }
 
+    setDevTreeLinks(updatedItems.sort((a, b) => a.order - b.order));
     queryClient.setQueryData(["user"], (oldUser: User) => {
       return {
         ...oldUser,

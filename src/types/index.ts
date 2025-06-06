@@ -33,6 +33,10 @@ export type SocialNetwork = {
   name: string;
   url: string;
   enabled: boolean;
+  order: number;
 };
 
-export type DevTreeLink = Pick<SocialNetwork, "name" | "url" | "enabled">;
+export type DevTreeLink = Pick<
+  SocialNetwork,
+  "name" | "url" | "enabled" | "order"
+>;
