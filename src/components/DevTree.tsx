@@ -51,7 +51,7 @@ const DevTree = ({ data }: { data: User }) => {
   return (
     <>
       <Header />
-      <div className="bg-gray-100  min-h-screen py-10">
+      <div className="bg-gray-100  min-h-screen min-w-[455px] py-10">
         <main className="mx-auto max-w-5xl p-10 md:p-0">
           <NavigationTabs />
           <div className="flex justify-end">
@@ -85,7 +85,7 @@ const DevTree = ({ data }: { data: User }) => {
                 collisionDetection={closestCenter}
                 onDragEnd={handleDragEnd}
               >
-                <div className="mt-20 flex flex-col gap-5">
+                <ul className="mt-20 flex flex-col gap-5">
                   <SortableContext
                     items={enabledLinks}
                     strategy={verticalListSortingStrategy}
@@ -94,7 +94,7 @@ const DevTree = ({ data }: { data: User }) => {
                       <DevTreeLink key={link.name} link={link} />
                     ))}
                   </SortableContext>
-                </div>
+                </ul>
               </DndContext>
             </div>
           </div>

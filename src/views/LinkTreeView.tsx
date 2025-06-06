@@ -147,7 +147,7 @@ const LinkTreeView = () => {
           />
         ))}
         <button
-          className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold"
+          className="bg-cyan-400 hover:bg-cyan-500 active:bg-cyan-600 p-2 text-lg w-full uppercase text-slate-600 hover:text-slate-700 rounded-lg font-bold cursor-pointer"
           onClick={() => mutate(queryClient.getQueryData(["user"])!)}
         >
           Save changes

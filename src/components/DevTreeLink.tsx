@@ -1,6 +1,6 @@
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { SocialNetwork } from "../types";
-import { useSortable } from "@dnd-kit/sortable";
 
 type DevTreeLinkProps = {
   link: SocialNetwork;
@@ -13,6 +13,7 @@ const DevTreeLink = ({ link }: DevTreeLinkProps) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
   return (
     <li
       ref={setNodeRef}
@@ -22,9 +23,9 @@ const DevTreeLink = ({ link }: DevTreeLinkProps) => {
       {...listeners}
     >
       <div
-        className="w-12 h-12 bg-cover"
+        className="w-12 h-12 min-w-12 bg-cover"
         style={{ backgroundImage: `url('/social/icon_${link.name}.svg')` }}
-      ></div>
+      />
       <p className="capitalize">
         Visit my: <span className="font-bold">{link.name}</span>
       </p>

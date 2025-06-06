@@ -14,9 +14,9 @@ const DevTreeInput = ({
   handleEnableLink,
 }: DevTreeInputProps) => {
   return (
-    <div className="bg-white shadow-sm p-5 items-center flex gap-3">
+    <div className="bg-white shadow-sm p-5 items-center flex sm:gap-5 m:gap-1">
       <div
-        className="w-12 h-12 bg-cover"
+        className="w-12 h-12 min-w-12 bg-cover"
         style={{ backgroundImage: `url('/social/icon_${item.name}.svg')` }}
       ></div>
       <input
